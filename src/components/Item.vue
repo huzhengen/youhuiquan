@@ -12,12 +12,13 @@
           <h1>{{list.title}}</h1>
           <h3>
             <strong>
+              <span>￥</span>
               {{list.zk_final_price}}
-              <del>{{list.reserve_price}}</del>
+              <del>￥{{list.reserve_price}}</del>
             </strong>
           </h3>
           <div>
-            <a target="_blank" :href="coupon_share_url" class="btn btn-danger">领券购买</a>
+            <a target="_blank" :href="coupon_share_url" class="btn btn-danger btn-lg">领券购买</a>
           </div>
         </b-col>
       </b-row>
@@ -48,10 +49,14 @@ export default {
         this.platform = 1;
       }
       this.id = this.$route.params.id;
-      this.coupon_share_url = this.$route.query.coupon;
-      console.log(this.platform, this.id);
+      // this.coupon_share_url = this.$route.query.coupon;
+      this.$bus.$on("csu", value => {
+        // console.log(value);
+        this.coupon_share_url = value;
+      });
+      // console.log(this.coupon_share_url);
       this.$http
-        .get("https://52djw.com/alimama/quanGetItemDetail.php", {
+        .get("/alimama/quanGetItemDetail.php", {
           params: {
             id: this.id,
             platform: this.platform
@@ -77,7 +82,7 @@ export default {
           this.list.zk_final_price = result.zk_final_price;
         })
         .catch(function(error) {
-          console.log(error);
+          // console.log(error);
         })
         .then(function() {
           // always executed
@@ -86,6 +91,10 @@ export default {
   },
   created: function() {
     this.getItemDetail();
+  },
+  beforeDestroy() {
+    // 销毁监听事件
+    this.$bus.$off("csu");
   },
   watch: {
     $route(to, from) {
@@ -98,12 +107,18 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less" rel="stylesheet/less">
 h1 {
-  font-size: 2rem;
+  font-size: 1.5rem;
+  font-weight: normal;
 }
 h3 {
-  color: red;
-  del {
-    font-size: 1rem;
+  strong {
+    color: red;
+    del,
+    span {
+      font-size: 1rem;
+      color: #bbb;
+      font-weight: normal;
+    }
   }
 }
 </style>

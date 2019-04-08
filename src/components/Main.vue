@@ -15,25 +15,35 @@
           v-for="item in list"
           :key="item.item_id"
         >
-          <div
-            class="card"
-            @click="coupon"
-            ref="coupon"
-            :url="item.coupon_share_url"
-            :id="item.item_id"
-          >
-            <b-link
-              :to="{ name: 'item', params: { id: `${item.item_id}` }, query: { coupon: `${item.coupon_share_url}` }}"
-            >
-              <img :src="item.pict_url" :alt="item.title" class="card-img-top">
+          <div class="card">
+            <b-link :to="{ name: 'item', params: { id: `${item.item_id}` }}">
+              <img
+                :src="item.pict_url"
+                :alt="item.title"
+                class="card-img-top"
+                @click="coupon($event)"
+                :url="item.coupon_share_url"
+                :id="item.item_id"
+              >
             </b-link>
             <div class="card-body">
               <h4 class="card-title">
-                <b-link
-                  :to="{ name: 'item', params: { id: `${item.item_id}` }, query: { coupon: `${item.coupon_share_url}` }}"
-                >{{item.title}}</b-link>
+                <b-link :to="{ name: 'item', params: { id: `${item.item_id}` }}">
+                  <span
+                    @click="coupon($event)"
+                    :url="item.coupon_share_url"
+                    :id="item.item_id"
+                  >{{item.title}}</span>
+                </b-link>
               </h4>
-              <b-button variant="danger">{{item.coupon_info}}</b-button>
+              <h4>
+                <strong>
+                  <span>￥</span>
+                  {{item.zk_final_price}}
+                  <del>￥{{item.reserve_price}}</del>
+                </strong>
+              </h4>
+              <b-button variant="danger" size="sm">{{item.coupon_info | quan}}</b-button>
             </div>
           </div>
         </b-col>
@@ -49,57 +59,101 @@ export default {
     return {
       list: [],
       q: "",
+      pageNo: 1,
       coupon_share_url: "",
-      loading: true
+      loading: true,
+      isLoading: false
     };
   },
   methods: {
     getItem() {
-      console.log(this.$route.params.q);
       if (this.$route.params.q) {
         this.q = this.$route.params.q;
       } else {
         this.q = "9块9";
       }
       this.$http
-        .get("https://52djw.com/alimama/quanGetDgMaterialOptional.php", {
+        .get("/alimama/quanGetDgMaterialOptional.php", {
           params: {
             query: this.q,
-            pageNo: 1
+            pageNo: this.pageNo
           }
         })
         .then(res => {
-          console.log(res);
           this.loading = false;
           let result = res.data.result_list.map_data;
-          // let result = JSON.parse(response.data).result_list.map_data
-          this.list = result;
+          result.forEach(v => {
+            this.list.push(v);
+          });
           console.log(this.list);
+          this.isLoading = false;
         })
-        .catch(function(error) {
+        .catch(error => {
           console.log(error);
         })
-        .then(function() {
+        .then(() => {
           // always executed
         });
     },
-    coupon() {
-      // console.log(this.$refs);
-      // this.$refs.coupon.forEach(i => {
-      //   console.log(i);
+    coupon(event) {
+      console.log(event);
+      this.coupon_share_url = event.target.attributes.url.nodeValue;
+      console.log(this.coupon_share_url);
+    },
+    scroll() {
+      window.addEventListener(
+        "scroll",
+        e => {
+          let bottomOfWindow =
+            document.documentElement.offsetHeight -
+              document.documentElement.scrollTop -
+              window.innerHeight <=
+            200;
+          console.log(bottomOfWindow, this.isLoading);
+          if (bottomOfWindow && this.isLoading === false) {
+            this.isLoading = true;
+            console.log(222);
+            this.pageNo++;
+            this.getItem();
+          }
+        },
+        true
+      );
+
+      // this.$nextTick().then(() => {
+      //   console.log(this.$refs);
+      //   this.$refs.main.addEventListener(
+      //     "scroll",
+      //     () => {
+      //       console.log(1);
+      //     },
+      //     false
+      //   );
       // });
-      // console.log(this.$refs.coupon.attributes.url.nodeValue);
-      // this.coupon_share_url = this.$refs.coupon.attributes.url.nodeValue;
-      // console.log("click");
-      // this.$bus.$emit("coupon", this.coupon_share_url);
     }
   },
   created: function() {
     this.getItem();
+    this.scroll();
+  },
+  beforeDestroy() {
+    this.$bus.$emit("csu", this.coupon_share_url);
   },
   watch: {
     $route(to, from) {
+      this.list = [];
       this.getItem();
+    }
+  },
+  filters: {
+    quan: function(value) {
+      if (value) {
+        // return value.split("减")[1] + "券";
+        let quan = value.split("减")[1]
+          ? value.split("减")[1]
+          : value.split("无")[0];
+        return quan + "券";
+      }
     }
   }
 };
@@ -113,6 +167,19 @@ export default {
     font-size: 0.8rem;
     a {
       color: #000;
+    }
+    strong {
+      font-size: 1.3rem;
+      color: #dc3545;
+      span {
+        font-size: 0.8rem;
+        color: #000;
+      }
+      del {
+        font-size: 0.8rem;
+        color: #bbb;
+        font-weight: normal;
+      }
     }
   }
 }
