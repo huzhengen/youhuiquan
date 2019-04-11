@@ -49,12 +49,7 @@ export default {
         this.platform = 1;
       }
       this.id = this.$route.params.id;
-      // this.coupon_share_url = this.$route.query.coupon;
-      this.$bus.$on("csu", value => {
-        // console.log(value);
-        this.coupon_share_url = value;
-      });
-      // console.log(this.coupon_share_url);
+      this.coupon_share_url = localStorage.getItem(this.id);
       this.$http
         .get("/alimama/quanGetItemDetail.php", {
           params: {
@@ -92,9 +87,10 @@ export default {
   created: function() {
     this.getItemDetail();
   },
-  beforeDestroy() {
-    // 销毁监听事件
-    this.$bus.$off("csu");
+  mounted() {
+    window.onbeforeunload = function(e) {
+      localStorage.removeItem(this.id);
+    };
   },
   watch: {
     $route(to, from) {

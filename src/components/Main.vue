@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main" ref="main">
     <b-container v-if="loading" class="text-center">
       <b-spinner style="width: 3rem; height: 3rem;" label="Large Spinner"></b-spinner>
     </b-container>
@@ -48,6 +48,7 @@
           </div>
         </b-col>
       </b-row>
+      <div class="text-center">努力加载中ヾ(◍°∇°◍)ﾉﾞ</div>
     </b-container>
   </div>
 </template>
@@ -62,7 +63,8 @@ export default {
       pageNo: 1,
       coupon_share_url: "",
       loading: true,
-      isLoading: false
+      isLoading: false,
+      platform: 1
     };
   },
   methods: {
@@ -76,7 +78,8 @@ export default {
         .get("/alimama/quanGetDgMaterialOptional.php", {
           params: {
             query: this.q,
-            pageNo: this.pageNo
+            pageNo: this.pageNo,
+            platform: this.platform
           }
         })
         .then(res => {
@@ -96,17 +99,27 @@ export default {
         });
     },
     coupon(event) {
-      console.log(event);
-      this.coupon_share_url = event.target.attributes.url.nodeValue;
-      console.log(this.coupon_share_url);
+      localStorage.setItem(
+        event.target.attributes.id.nodeValue,
+        event.target.attributes.url.nodeValue
+      );
     },
-    scroll() {
+    scroll(x) {
+      if (this.platform === 1) {
+        x = "scroll";
+      } else {
+        x = "touchend";
+      }
       window.addEventListener(
-        "scroll",
+        x,
         e => {
+          let scrollTop =
+            document.documentElement.scrollTop ||
+            window.pageYOffset ||
+            document.body.scrollTop;
           let bottomOfWindow =
             document.documentElement.offsetHeight -
-              document.documentElement.scrollTop -
+              scrollTop -
               window.innerHeight <=
             200;
           console.log(bottomOfWindow, this.isLoading);
@@ -119,25 +132,25 @@ export default {
         },
         true
       );
-
-      // this.$nextTick().then(() => {
-      //   console.log(this.$refs);
-      //   this.$refs.main.addEventListener(
-      //     "scroll",
-      //     () => {
-      //       console.log(1);
-      //     },
-      //     false
-      //   );
-      // });
+    },
+    isPhone() {
+      let isMobile = /Android|webOS|iPhone|iPad|BlackBerry/i.test(
+        navigator.userAgent
+      );
+      if (isMobile) {
+        this.platform = 2;
+      } else {
+        this.platform = 1;
+      }
     }
   },
-  created: function() {
+  created() {
+    this.isPhone();
     this.getItem();
     this.scroll();
   },
   beforeDestroy() {
-    this.$bus.$emit("csu", this.coupon_share_url);
+    // this.$bus.$emit("csu", this.coupon_share_url);
   },
   watch: {
     $route(to, from) {
