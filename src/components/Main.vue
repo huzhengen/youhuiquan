@@ -68,12 +68,30 @@ export default {
     };
   },
   methods: {
-    getItem() {
+    getQ() {
       if (this.$route.params.q) {
         this.q = this.$route.params.q;
+        this.getItem();
       } else {
-        this.q = "9块9";
+        this.$http
+          .get("/alimama/cats.json")
+          .then(res => {
+            let tempArr = res.data.cats;
+            let tempQ = tempArr
+              .sort(function() {
+                return 0.5 - Math.random();
+              })
+              .slice(0, 1);
+            this.q = tempQ[0];
+            console.log(this.q);
+            this.getItem();
+          })
+          .catch(e => {
+            console.log(e);
+          });
       }
+    },
+    getItem() {
       this.$http
         .get("/alimama/quanGetDgMaterialOptional.php", {
           params: {
@@ -146,16 +164,13 @@ export default {
   },
   created() {
     this.isPhone();
-    this.getItem();
+    this.getQ();
     this.scroll();
-  },
-  beforeDestroy() {
-    // this.$bus.$emit("csu", this.coupon_share_url);
   },
   watch: {
     $route(to, from) {
       this.list = [];
-      this.getItem();
+      this.getQ();
     }
   },
   filters: {
