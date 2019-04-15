@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router/index'
 import bus from './bus/index'
+import store from './store/index.js'
 import axios from "axios";
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -14,5 +15,6 @@ Vue.config.productionTip = false
 
 new Vue({
     router,
+    store,
     render: h => h(App),
 }).$mount('#app')

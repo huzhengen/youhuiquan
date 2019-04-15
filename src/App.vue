@@ -26,7 +26,7 @@ body {
   margin: 0;
   padding: 0;
 }
-#app{
+#app {
   padding-top: 70px;
 }
 </style>

@@ -16,7 +16,7 @@
           :key="item.item_id"
         >
           <div class="card">
-            <b-link :to="{ name: 'item', params: { id: `${item.item_id}` }}">
+            <b-link :to="{ name: 'item', params: { id: `${item.item_id}` }}" target="_blank">
               <img
                 :src="item.pict_url"
                 :alt="item.title"
@@ -28,7 +28,7 @@
             </b-link>
             <div class="card-body">
               <h4 class="card-title">
-                <b-link :to="{ name: 'item', params: { id: `${item.item_id}` }}">
+                <b-link :to="{ name: 'item', params: { id: `${item.item_id}` }}" target="_blank">
                   <span
                     @click="coupon($event)"
                     :url="item.coupon_share_url"
@@ -43,7 +43,13 @@
                   <del>￥{{item.reserve_price}}</del>
                 </strong>
               </h4>
-              <b-button variant="danger" size="sm">{{item.coupon_info | quan}}</b-button>
+              <b-button
+                variant="danger"
+                size="sm"
+                @click="coupon($event)"
+                :to="{ name: 'item', params: { id: `${item.item_id}` }}"
+                target="_blank"
+              >{{item.coupon_amount}}元券</b-button>
             </div>
           </div>
         </b-col>
@@ -73,22 +79,16 @@ export default {
         this.q = this.$route.params.q;
         this.getItem();
       } else {
-        this.$http
-          .get("/alimama/cats.json")
-          .then(res => {
-            let tempArr = res.data.cats;
-            let tempQ = tempArr
-              .sort(function() {
-                return 0.5 - Math.random();
-              })
-              .slice(0, 1);
-            this.q = tempQ[0];
-            console.log(this.q);
-            this.getItem();
-          })
-          .catch(e => {
-            console.log(e);
-          });
+        setTimeout(() => {
+          let tempArr = this.$store.getters.gettersCats;
+          let tempQ = tempArr
+            .sort(function() {
+              return 0.5 - Math.random();
+            })
+            .slice(0, 1);
+          this.q = tempQ[0];
+          this.getItem();
+        }, 0);
       }
     },
     getItem() {
@@ -106,8 +106,8 @@ export default {
           result.forEach(v => {
             this.list.push(v);
           });
-          console.log(this.list);
           this.isLoading = false;
+          console.log(this.list);
         })
         .catch(error => {
           console.log(error);
@@ -140,7 +140,7 @@ export default {
               scrollTop -
               window.innerHeight <=
             200;
-          console.log(bottomOfWindow, this.isLoading);
+          // console.log(bottomOfWindow, this.isLoading);
           if (bottomOfWindow && this.isLoading === false) {
             this.isLoading = true;
             console.log(222);
