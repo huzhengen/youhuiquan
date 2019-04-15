@@ -21,12 +21,34 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less" rel="stylesheet/less">
 body {
   margin: 0;
   padding: 0;
 }
 #app {
   padding-top: 70px;
+}
+.card {
+  h3,
+  h4 {
+    font-size: 0.8rem;
+    a {
+      color: #000;
+    }
+    strong {
+      font-size: 1.3rem;
+      color: #dc3545;
+      span {
+        font-size: 0.8rem;
+        color: #000;
+      }
+      del {
+        font-size: 0.8rem;
+        color: #bbb;
+        font-weight: normal;
+      }
+    }
+  }
 }
 </style>

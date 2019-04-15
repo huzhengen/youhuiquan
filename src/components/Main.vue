@@ -49,6 +49,8 @@
                 @click="coupon($event)"
                 :to="{ name: 'item', params: { id: `${item.item_id}` }}"
                 target="_blank"
+                :url="item.coupon_share_url"
+                :id="item.item_id"
               >{{item.coupon_amount}}元券</b-button>
             </div>
           </div>
@@ -117,6 +119,7 @@ export default {
         });
     },
     coupon(event) {
+      console.log(event);
       localStorage.setItem(
         event.target.attributes.id.nodeValue,
         event.target.attributes.url.nodeValue
@@ -189,26 +192,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less" rel="stylesheet/less">
-.card {
-  h3,
-  h4 {
-    font-size: 0.8rem;
-    a {
-      color: #000;
-    }
-    strong {
-      font-size: 1.3rem;
-      color: #dc3545;
-      span {
-        font-size: 0.8rem;
-        color: #000;
-      }
-      del {
-        font-size: 0.8rem;
-        color: #bbb;
-        font-weight: normal;
-      }
-    }
-  }
-}
 </style>

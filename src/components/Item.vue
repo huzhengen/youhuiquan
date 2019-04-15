@@ -4,12 +4,16 @@
       <b-spinner style="width: 3rem; height: 3rem;" label="Large Spinner"></b-spinner>
     </b-container>
     <b-container v-else>
-      <b-row>
+      <b-row class="itemDetail">
         <b-col cols="12" sm="6" md="4" lg="4" xl="4">
           <img :src="list.pict_url" alt="Image" class="card-img-top">
         </b-col>
         <b-col cols="12" sm="6" md="8" lg="8" xl="8">
-          <h1>{{list.title}}</h1>
+          <h1 class="mt-2">{{list.title}}</h1>
+          <h6>
+            <span>最近一个月销量：{{list.volume}}</span>/
+            <span>店铺：{{list.nick}}</span>
+          </h6>
           <h3>
             <strong>
               <span>￥</span>
@@ -19,6 +23,59 @@
           </h3>
           <div>
             <a target="_blank" :href="coupon_share_url" class="btn btn-danger btn-lg">领券购买</a>
+          </div>
+        </b-col>
+      </b-row>
+
+      <b-row class="recommendList mt-3">
+        <b-col
+          class="mb-3"
+          cols="12"
+          sm="6"
+          md="4"
+          lg="3"
+          xl="3"
+          v-for="item in recommendList"
+          :key="item.item_id"
+        >
+          <div class="card">
+            <b-link :to="{ name: 'item', params: { id: `${item.item_id}` }}" target="_blank">
+              <img
+                :src="item.pict_url"
+                :alt="item.title"
+                class="card-img-top"
+                @click="coupon($event)"
+                :url="item.coupon_share_url"
+                :id="item.item_id"
+              >
+            </b-link>
+            <div class="card-body">
+              <h4 class="card-title">
+                <b-link :to="{ name: 'item', params: { id: `${item.item_id}` }}" target="_blank">
+                  <span
+                    @click="coupon($event)"
+                    :url="item.coupon_share_url"
+                    :id="item.item_id"
+                  >{{item.title}}</span>
+                </b-link>
+              </h4>
+              <h4>
+                <strong>
+                  <span>￥</span>
+                  {{item.zk_final_price}}
+                  <del>￥{{item.reserve_price}}</del>
+                </strong>
+              </h4>
+              <b-button
+                variant="danger"
+                size="sm"
+                @click="coupon($event)"
+                :to="{ name: 'item', params: { id: `${item.item_id}` }}"
+                target="_blank"
+                :url="item.coupon_share_url"
+                :id="item.item_id"
+              >{{item.coupon_amount}}元券</b-button>
+            </div>
           </div>
         </b-col>
       </b-row>
@@ -35,7 +92,8 @@ export default {
       platform: 0,
       loading: true,
       coupon_share_url: "",
-      list: {}
+      list: {},
+      recommendList: []
     };
   },
   methods: {
@@ -75,6 +133,7 @@ export default {
           this.list.user_type = result.user_type;
           this.list.volume = result.volume;
           this.list.zk_final_price = result.zk_final_price;
+          this.getItem(this.list.cat_leaf_name, this.platform);
         })
         .catch(function(error) {
           // console.log(error);
@@ -82,6 +141,35 @@ export default {
         .then(function() {
           // always executed
         });
+    },
+    getItem(q, platform) {
+      let randomPageNo = Math.ceil(Math.random() * 20);
+      this.$http
+        .get("/alimama/quanGetDgMaterialOptional.php", {
+          params: {
+            query: q,
+            pageNo: randomPageNo,
+            platform: platform
+          }
+        })
+        .then(res => {
+          console.log(res);
+          let result = res.data.result_list.map_data;
+          this.recommendList = result;
+          console.log(this.recommendList);
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .then(() => {
+          // always executed
+        });
+    },
+    coupon(event) {
+      localStorage.setItem(
+        event.target.attributes.id.nodeValue,
+        event.target.attributes.url.nodeValue
+      );
     }
   },
   created: function() {
@@ -102,19 +190,24 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less" rel="stylesheet/less">
-h1 {
-  font-size: 1.5rem;
-  font-weight: normal;
-}
-h3 {
-  strong {
-    color: red;
-    del,
-    span {
-      font-size: 1rem;
-      color: #bbb;
-      font-weight: normal;
+.itemDetail {
+  h1 {
+    font-size: 1.5rem;
+    font-weight: normal;
+  }
+  h3 {
+    strong {
+      color: red;
+      del,
+      span {
+        font-size: 1rem;
+        color: #bbb;
+        font-weight: normal;
+      }
     }
+  }
+  h6 {
+    font-size: 0.8rem;
   }
 }
 </style>
