@@ -40,9 +40,9 @@ export default new Vuex.Store({
                 })
                 .catch(e => {
                     console.log(e);
-                    // commit('mutationsCats', {
-                    //     cats: [1, 2, 3, 4, 5, 6, 7, 8, 9]
-                    // })
+                    commit('mutationsCats', {
+                        cats: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                    })
                 });
         }
     }

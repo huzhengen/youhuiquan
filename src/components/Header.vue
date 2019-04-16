@@ -50,32 +50,20 @@ export default {
       }
     },
     getCats() {
-      this.$store.dispatch("actionsCats");
-      setTimeout(() => {
-        let tempArr = this.$store.getters.gettersCats;
-        let catsArr = tempArr
-          .sort(function() {
-            return 0.5 - Math.random();
-          })
-          .slice(0, 4);
-        this.cats = catsArr;
-        console.log(this.cats);
-      }, 0);
-
-      // this.$http
-      //   .get("/alimama/cats.json")
-      //   .then(res => {
-      //     let tempArr = res.data.cats;
-      //     let catsArr = tempArr
-      //       .sort(function() {
-      //         return 0.5 - Math.random();
-      //       })
-      //       .slice(0, 6);
-      //     this.cats = catsArr;
-      //   })
-      //   .catch(e => {
-      //     console.log(e);
-      //   });
+      this.$http
+        .get("/alimama/cats.json")
+        .then(res => {
+          let catsArr = res.data.cats
+            .sort(function() {
+              return 0.5 - Math.random();
+            })
+            .slice(0, 4);
+          this.cats = catsArr;
+          console.log(this.cats);
+        })
+        .catch(e => {
+          console.log(e);
+        });
     }
   }
 };

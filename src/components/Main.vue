@@ -81,16 +81,20 @@ export default {
         this.q = this.$route.params.q;
         this.getItem();
       } else {
-        setTimeout(() => {
-          let tempArr = this.$store.getters.gettersCats;
-          let tempQ = tempArr
-            .sort(function() {
-              return 0.5 - Math.random();
-            })
-            .slice(0, 1);
-          this.q = tempQ[0];
-          this.getItem();
-        }, 0);
+        this.$http
+          .get("/alimama/todayCats.json")
+          .then(res => {
+            let catsArr = res.data.cats
+              .sort(function() {
+                return 0.5 - Math.random();
+              })
+              .slice(0, 1);
+            this.q = catsArr[0];
+            this.getItem();
+          })
+          .catch(e => {
+            console.log(e);
+          });
       }
     },
     getItem() {
@@ -119,7 +123,6 @@ export default {
         });
     },
     coupon(event) {
-      console.log(event);
       localStorage.setItem(
         event.target.attributes.id.nodeValue,
         event.target.attributes.url.nodeValue
