@@ -3,19 +3,22 @@
         <router-view name="header"></router-view>
         <router-view name="main"></router-view>
         <router-view name="item"></router-view>
+        <router-view name="article"></router-view>
     </div>
 </template>
 <script>
 import Header from "./components/Header.vue";
 import Main from "./components/Main.vue";
 import Item from "./components/Item.vue";
+import Article from "./components/Article.vue";
 
 export default {
     name: "App",
     components: {
         Header,
         Main,
-        Item
+        Item,
+        Article
     }
 };
 </script>
