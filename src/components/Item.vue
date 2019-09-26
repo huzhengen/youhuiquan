@@ -88,20 +88,36 @@ export default {
                 .then(res => {
                     this.loading = false;
                     let result = res.data.results.n_tbk_item[0];
-                    this.list.cat_leaf_name = result.cat_leaf_name;
-                    this.list.cat_name = result.cat_name;
-                    this.list.item_url = result.item_url;
-                    this.list.material_lib_type = result.material_lib_type;
-                    this.list.nick = result.nick;
-                    this.list.num_iid = result.num_iid;
-                    this.list.pict_url = result.pict_url;
-                    this.list.provcity = result.provcity;
-                    this.list.reserve_price = result.reserve_price;
-                    this.list.seller_id = result.seller_id;
-                    this.list.title = result.title;
-                    this.list.user_type = result.user_type;
-                    this.list.volume = result.volume;
-                    this.list.zk_final_price = result.zk_final_price;
+                    this.list = {
+                        cat_leaf_name: result.cat_leaf_name,
+                        cat_name: result.cat_name,
+                        item_url: result.item_url,
+                        material_lib_type: result.material_lib_type,
+                        nick: result.nick,
+                        num_iid: result.num_iid,
+                        pict_url: result.pict_url,
+                        provcity: result.provcity,
+                        reserve_price: result.reserve_price,
+                        seller_id: result.seller_id,
+                        title: result.title,
+                        user_type: result.user_type,
+                        volume: result.volume,
+                        zk_final_price: result.zk_final_price,
+                    }
+                    // this.list.cat_leaf_name = result.cat_leaf_name;
+                    // this.list.cat_name = result.cat_name;
+                    // this.list.item_url = result.item_url;
+                    // this.list.material_lib_type = result.material_lib_type;
+                    // this.list.nick = result.nick;
+                    // this.list.num_iid = result.num_iid;
+                    // this.list.pict_url = result.pict_url;
+                    // this.list.provcity = result.provcity;
+                    // this.list.reserve_price = result.reserve_price;
+                    // this.list.seller_id = result.seller_id;
+                    // this.list.title = result.title;
+                    // this.list.user_type = result.user_type;
+                    // this.list.volume = result.volume;
+                    // this.list.zk_final_price = result.zk_final_price;
                     this.getItem(this.list.cat_leaf_name, this.platform);
                 })
                 .catch(function() {})
