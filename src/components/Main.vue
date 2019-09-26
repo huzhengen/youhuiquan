@@ -6,7 +6,7 @@
         <b-container v-else>
             <b-row v-if="index">
                 <h2 class="text-center" style="width:100%;">限时抢购商品</h2>
-                <b-col class="mb-3" cols="12" sm="6" md="4" lg="3" xl="3" v-for="item in list" :key="item.item_id">
+                <b-col class="mb-3" cols="6" sm="6" md="4" lg="3" xl="3" v-for="(item, index) in list" :key="index">
                     <div class="card">
                         <b-link :href="item.click_url" target="_blank">
                             <img :src="item.pic_url" :alt="item.title" :title="item.title" class="card-img-top" :url="item.click_url" :id="item.num_iid">
@@ -31,7 +31,7 @@
                 </b-col>
             </b-row>
             <b-row v-else>
-                <b-col class="mb-3" cols="12" sm="6" md="4" lg="3" xl="3" v-for="item in list" :key="item.item_id">
+                <b-col class="mb-3" cols="12" sm="6" md="4" lg="3" xl="3" v-for="(item, index) in list" :key="index">
                     <div class="card">
                         <b-link :to="{ name: 'item', params: { id: `${item.item_id}` }}" target="_blank">
                             <img :src="item.pict_url" :alt="item.title" class="card-img-top" @click="coupon($event)" :url="item.coupon_share_url" :id="item.item_id">

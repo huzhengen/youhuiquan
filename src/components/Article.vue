@@ -8,13 +8,13 @@
       <b-row>
         <b-col
           class="mb-3"
-          cols="12"
+          cols="6"
           sm="6"
           md="4"
           lg="3"
           xl="3"
-          v-for="item in list"
-          :key="item.content_id"
+          v-for="(item, index) in list"
+          :key="index"
         >
           <div class="card">
             <b-link :href="item.clink" :title="item.title" target="_blank">
@@ -52,11 +52,12 @@ export default {
       isLoading: false,
       platform: 1,
       timestamp: new Date().getTime(),
-      cid: Math.ceil(Math.random()*10)
+      cid: Math.ceil(Math.random() * 10)
     };
   },
   methods: {
     getContent() {
+      console.log(this.cid);
       this.$http
         .get("/alimama/quanGetTbkContent.php", {
           params: {

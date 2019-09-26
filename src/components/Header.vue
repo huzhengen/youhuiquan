@@ -7,6 +7,7 @@
                 <b-collapse id="nav-collapse" is-nav>
                     <b-navbar-nav>
                         <b-nav-item :to="`/q/${cat}`" v-for="cat in cats" :key="cat.id">{{cat}}</b-nav-item>
+                        <b-nav-item :to="`/article`">体验评价</b-nav-item>
                         <li class="nav-item"><a href="/index/" class="nav-link" target="_blank">52电竞网</a></li>
                     </b-navbar-nav>
                     <!-- Right aligned nav items -->
