@@ -1,9 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Header from '../components/Header'
-import Main from '../components/Main'
-import Item from '../components/Item'
-import Article from '../components/Article'
+
+// import Header from '../components/Header'
+// import Main from '../components/Main'
+// import Item from '../components/Item'
+// import Article from '../components/Article'
+
+const Header = () => import('../components/Header')
+const Main = () => import('../components/Main')
+const Item = () => import('../components/Item')
+const Article = () => import('../components/Article')
 
 Vue.use(Router)
 
