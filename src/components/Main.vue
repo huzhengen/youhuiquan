@@ -84,6 +84,7 @@
             </div>
             <div v-else>
                 <b-row>
+                    <h2 class="text-center" style="width:100%;">{{q}}</h2>
                     <b-col class="mb-3" cols="6" sm="6" md="4" lg="3" xl="3" v-for="(item, index) in list"
                            :key="index">
                         <div class="card">

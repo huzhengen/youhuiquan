@@ -35,6 +35,24 @@ body {
     padding-top: 70px;
 }
 
+@media screen and (max-width: 992px) {
+    #app {
+        padding-top: 105px;
+    }
+}
+
+@media screen and (min-width: 576px) and (max-width: 968px) {
+    #app {
+        padding-top: 144px;
+    }
+}
+
+@media screen and (max-width: 575px) {
+    #app {
+        padding-top: 70px;
+    }
+}
+
 .card {
 
     h3,
