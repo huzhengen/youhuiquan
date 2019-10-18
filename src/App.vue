@@ -29,6 +29,7 @@ export default {
 body {
     margin: 0;
     padding: 0;
+    color: #666;
 }
 
 #app {
@@ -57,10 +58,11 @@ body {
 
     h3,
     h4 {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
+        color: #666;
 
         a {
-            color: #000;
+            color: #666;
         }
 
         strong {
@@ -69,7 +71,7 @@ body {
 
             span {
                 font-size: 0.8rem;
-                color: #000;
+                color: #666;
             }
 
             del {
