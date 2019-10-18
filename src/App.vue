@@ -4,6 +4,7 @@
         <router-view name="main"></router-view>
         <router-view name="item"></router-view>
         <router-view name="article"></router-view>
+        <router-view name="timelimit"></router-view>
     </div>
 </template>
 <script>
@@ -11,6 +12,7 @@ import Header from "./components/Header.vue";
 import Main from "./components/Main.vue";
 import Item from "./components/Item.vue";
 import Article from "./components/Article.vue";
+import TimeLimit from "./components/TimeLimit.vue";
 
 export default {
     name: "App",
@@ -18,7 +20,8 @@ export default {
         Header,
         Main,
         Item,
-        Article
+        Article,
+        TimeLimit
     }
 };
 </script>
