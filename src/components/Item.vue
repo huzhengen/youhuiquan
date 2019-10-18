@@ -134,8 +134,7 @@ export default {
                     }
                 })
                 .then(res => {
-                    let result = res.data.result_list.map_data;
-                    this.recommendList = result;
+                    this.recommendList = res.data.result_list.map_data;
                 })
                 .catch(() => {});
         },

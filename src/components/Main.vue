@@ -265,7 +265,6 @@
                             this.isLoading = true;
                             this.pageNo++;
                             if (this.index) {
-                                console.log(this.pageNo)
                                 this.getHotFavoritesItem();
                             } else {
                                 this.getItem();
