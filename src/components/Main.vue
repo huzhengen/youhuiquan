@@ -31,6 +31,7 @@
                                                     <del>￥{{item.reserve_price}}</del>
                                                 </strong>
                                             </h4>
+                                            <h4>{{item.nick}}</h4>
                                             <b-button variant="danger" size="sm" @click="coupon($event)"
                                                       :to="{ name: 'item', params: { id: `${item.num_iid}` }}"
                                                       target="_blank" :url="item.coupon_click_url" :id="item.num_iid">
@@ -66,6 +67,7 @@
                                                     <del>￥{{item.reserve_price}}</del>
                                                 </strong>
                                             </h4>
+                                            <h4>{{item.nick}}</h4>
                                             <b-button variant="danger" size="sm" @click="coupon($event)"
                                                       :to="{ name: 'item', params: { id: `${item.num_iid}` }}"
                                                       target="_blank" :url="item.coupon_click_url" :id="item.num_iid">
@@ -266,6 +268,7 @@
                             this.pageNo++;
                             if (this.index) {
                                 this.getHotFavoritesItem();
+                                this.getQingCangFavoritesItem();
                             } else {
                                 this.getItem();
                             }
